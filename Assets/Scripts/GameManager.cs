@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     private int stage;
 
     private void Awake() {
-        stage = 1;
+        stage = 9;
     }
     
     private void Start() {
