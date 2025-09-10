@@ -164,10 +164,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Labyrinth
   prefabs:
-    floor: {fileID: 7404073012787072777, guid: c29a727ad80494800849ad074105884a, type: 3}
-    corner: {fileID: 914200451816339944, guid: 74046fee20a9f433096d2b1fadf7fb5b, type: 3}
-    wall: {fileID: 5545285171998421983, guid: 4eb39804e94194ae98fc7e91a153d14a, type: 3}
-    wallEnd: {fileID: 5945354608876713062, guid: 8716a2f3ab32c49338655c2a48919210, type: 3}
+    labyrinth:
+      floor: {fileID: 7404073012787072777, guid: c29a727ad80494800849ad074105884a, type: 3}
+      corner: {fileID: 914200451816339944, guid: 74046fee20a9f433096d2b1fadf7fb5b, type: 3}
+      wall: {fileID: 5545285171998421983, guid: 4eb39804e94194ae98fc7e91a153d14a, type: 3}
+      wallEnd: {fileID: 5945354608876713062, guid: 8716a2f3ab32c49338655c2a48919210, type: 3}
+    ball: {fileID: 8491700461530595852, guid: ac1165a0a364f4376945f8f19e244e0b, type: 3}
 --- !u!1 &1477538910
 GameObject:
   m_ObjectHideFlags: 0
@@ -229,7 +231,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
+  orthographic: 1
   orthographic size: 5
   m_Depth: -1
   m_CullingMask:
@@ -254,13 +256,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1477538910}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 20, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!114 &1477538914
 MonoBehaviour:
   m_ObjectHideFlags: 0

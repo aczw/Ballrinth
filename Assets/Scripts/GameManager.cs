@@ -9,9 +9,9 @@ public class GameManager : MonoBehaviour
     private int stage;
 
     private void Awake() {
-        stage = 9;
+        stage = 5;
     }
-    
+
     private void Start() {
         labyrinth.Generate(stage + 1, stage + 1);
     }
