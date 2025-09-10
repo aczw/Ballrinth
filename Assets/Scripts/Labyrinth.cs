@@ -73,6 +73,17 @@ public class Labyrinth : MonoBehaviour
         Debug.Log($"generated with {rows} rows, {columns} columns");
     }
 
+    public void Clear() {
+        foreach (Transform child in transform) {
+            Destroy(child.gameObject);
+        }
+
+        var ball = GameObject.FindWithTag("Player");
+        Destroy(ball);
+
+        transform.localEulerAngles = Vector3.zero;
+    }
+
     public void ProcessRotation(bool up, bool down, bool left, bool right) {
         var deltaVertical = 0f;
         var deltaHorizontal = 0f;

@@ -44,5 +44,9 @@ public class GameManager : MonoBehaviour
 
     public void EscapeStage() {
         Debug.Log($"Escaped stage {stage}!");
+
+        labyrinth.Clear();
+        stage++;
+        labyrinth.Generate(stage + 1, stage + 1);
     }
 }
