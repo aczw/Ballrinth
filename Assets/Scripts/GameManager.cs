@@ -2,17 +2,29 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Systems
     [SerializeField] private Labyrinth labyrinth;
 
-    // Game state
     private int stage;
 
+    public static GameManager I { get; private set; }
+
     private void Awake() {
-        stage = 5;
+        if (I == null) {
+            I = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else {
+            Destroy(gameObject);
+        }
+
+        stage = 3;
     }
 
     private void Start() {
         labyrinth.Generate(stage + 1, stage + 1);
+    }
+
+    public void EscapeStage() {
+        Debug.Log($"Escaped stage {stage}!");
     }
 }

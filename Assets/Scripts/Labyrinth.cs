@@ -16,10 +16,18 @@ public class Labyrinth : MonoBehaviour
 
         Debug.Log($"row bounds: {rowBounds}, col bounds: {colBounds}");
 
+        // Depending on maze size parity the exit is spawned in a different location
+        var exitTilePosition =
+            rows % 2 == 0 ? new Vector2(colBounds.x, rowBounds.x) : new Vector2(colBounds.y, rowBounds.x);
+
         // Generate floor tiles
         for (var z = rowBounds.x; z <= rowBounds.y; ++z) {
             for (var x = colBounds.x; x <= colBounds.y; ++x) {
-                Instantiate(prefabs.labyrinth.floor, new Vector3(x, -0.125f, z), Quaternion.identity, transform);
+                var tilePrefab = exitTilePosition == new Vector2(x, z)
+                    ? prefabs.labyrinth.tiles.exit
+                    : prefabs.labyrinth.tiles.floor;
+
+                Instantiate(tilePrefab, new Vector3(x, -0.125f, z), Quaternion.identity, transform);
 
                 // Spawn ball in the top left corner
                 if (Mathf.Approximately(z, rowBounds.y) && Mathf.Approximately(x, colBounds.x)) {
@@ -66,9 +74,16 @@ public class Labyrinth : MonoBehaviour
     }
 
     [Serializable]
-    private struct LabyrinthPieces
+    private struct Tiles
     {
         public GameObject floor;
+        public GameObject exit;
+    }
+
+    [Serializable]
+    private struct LabyrinthPieces
+    {
+        public Tiles tiles;
         public GameObject corner;
         public GameObject wall;
         public GameObject wallEnd;

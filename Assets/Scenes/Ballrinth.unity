@@ -165,7 +165,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Labyrinth
   prefabs:
     labyrinth:
-      floor: {fileID: 7404073012787072777, guid: c29a727ad80494800849ad074105884a, type: 3}
+      tiles:
+        floor: {fileID: 7404073012787072777, guid: c29a727ad80494800849ad074105884a, type: 3}
+        exit: {fileID: 7404073012787072777, guid: fe6207798827e4344a9041dfaf50c393, type: 3}
       corner: {fileID: 914200451816339944, guid: 74046fee20a9f433096d2b1fadf7fb5b, type: 3}
       wall: {fileID: 5545285171998421983, guid: 4eb39804e94194ae98fc7e91a153d14a, type: 3}
       wallEnd: {fileID: 5945354608876713062, guid: 8716a2f3ab32c49338655c2a48919210, type: 3}
@@ -322,7 +324,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1782121200
 Transform:
