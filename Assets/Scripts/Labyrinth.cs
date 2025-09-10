@@ -73,6 +73,19 @@ public class Labyrinth : MonoBehaviour
         Debug.Log($"generated with {rows} rows, {columns} columns");
     }
 
+    public void ProcessRotation(bool up, bool down, bool left, bool right) {
+        var deltaVertical = 0f;
+        var deltaHorizontal = 0f;
+
+        if (up) deltaVertical += 1f;
+        if (down) deltaVertical -= 1f;
+        if (left) deltaHorizontal += 1f;
+        if (right) deltaHorizontal -= 1f;
+
+        var rotation = transform.localEulerAngles;
+        transform.localEulerAngles = new Vector3(rotation.x + deltaVertical, 0f, rotation.z + deltaHorizontal);
+    }
+
     [Serializable]
     private struct Tiles
     {
