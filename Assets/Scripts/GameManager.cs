@@ -14,12 +14,15 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject mainMenu;
     [SerializeField] private GameObject intermission;
 
-    // Overall game state
+    // Current run state
     private int currentStage;
     private GameState currentState;
 
     // Per-frame state
     private FrameInputBundle input;
+
+    // Overall game state
+    private int maxStagesEscaped;
 
     public static GameManager I { get; private set; }
 
@@ -33,6 +36,7 @@ public class GameManager : MonoBehaviour
 
         currentStage = beginningStage;
         currentState = GameState.MainMenu;
+        maxStagesEscaped = 0;
     }
 
     private void Update() {
@@ -41,7 +45,7 @@ public class GameManager : MonoBehaviour
         Debug.Log($"Time left: {timer.GetCurrentTime()}");
 
         if (timer.IsFinished()) {
-            Debug.Log("GAME DONE!!!!");
+            EndGame();
             return;
         }
 
@@ -110,11 +114,42 @@ public class GameManager : MonoBehaviour
         currentState = GameState.InGame;
     }
 
+    public void EndGame() {
+        if (currentState != GameState.InGame) {
+            Debug.LogError($"Incorrect game state: should be in-game, instead we're on {currentState}!");
+            return;
+        }
+
+        currentState = GameState.Transitioning;
+
+        // Game can end before we run out of time
+        if (!timer.IsFinished()) timer.Pause();
+
+        // End current labyrinth run and wrap up any final game state
+        labyrinth.Clear();
+
+        var wonGame = false;
+        if (currentStage >= maxStagesEscaped) {
+            wonGame = true;
+            maxStagesEscaped = currentStage;
+        }
+
+        Debug.Log(wonGame
+                      ? $"YOU WON THE GAME WITH {maxStagesEscaped} STAGES CLEARED!"
+                      : $"YOU LOST! NUM STAGES ESCAPED: {currentStage}, HIGH SCORE: {maxStagesEscaped}");
+
+        // Set up final outcome screen
+        // TODO!
+
+        currentState = GameState.End;
+    }
+
     private enum GameState
     {
         MainMenu,
         InGame,
         Intermission,
+        End,
         Transitioning
     }
 }
