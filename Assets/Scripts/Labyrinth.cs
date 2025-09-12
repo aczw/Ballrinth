@@ -5,6 +5,8 @@ public class Labyrinth : MonoBehaviour
 {
     [SerializeField] private Prefabs prefabs;
 
+    private const float ROTATION_BOUND = 20f;
+
     public void Generate(int rows, int columns) {
         var rowOffset = Mathf.Floor(rows / 2f) + (rows % 2 == 0 ? -0.5f : 0f);
         var colOffset = Mathf.Floor(columns / 2f) + (rows % 2 == 0 ? -0.5f : 0f);
@@ -23,9 +25,11 @@ public class Labyrinth : MonoBehaviour
         // Generate floor tiles
         for (var z = rowBounds.x; z <= rowBounds.y; ++z) {
             for (var x = colBounds.x; x <= colBounds.y; ++x) {
-                var tilePrefab = exitTilePosition == new Vector2(x, z)
-                    ? prefabs.labyrinth.tiles.exit
-                    : prefabs.labyrinth.tiles.floor;
+                var tilePrefab = prefabs.labyrinth.tiles.floor;
+
+                if (exitTilePosition == new Vector2(x, z)) {
+                    tilePrefab = prefabs.labyrinth.tiles.exit;
+                }
 
                 Instantiate(tilePrefab, new Vector3(x, -0.125f, z), Quaternion.identity, transform);
 
@@ -93,8 +97,14 @@ public class Labyrinth : MonoBehaviour
         if (left) deltaHorizontal += 1f;
         if (right) deltaHorizontal -= 1f;
 
+        // Unity normalizes the angle to be between [0, 360) so we correct that here
         var rotation = transform.localEulerAngles;
-        transform.localEulerAngles = new Vector3(rotation.x + deltaVertical, 0f, rotation.z + deltaHorizontal);
+        if (rotation.x > 180f) rotation.x -= 360f;
+        if (rotation.z > 180f) rotation.z -= 360f;
+        
+        var vertical = Mathf.Clamp(rotation.x + deltaVertical,-ROTATION_BOUND, ROTATION_BOUND);
+        var horizontal = Mathf.Clamp(rotation.z + deltaHorizontal,-ROTATION_BOUND, ROTATION_BOUND);
+        transform.localEulerAngles = new Vector3(vertical, 0f, horizontal);
     }
 
     [Serializable]
