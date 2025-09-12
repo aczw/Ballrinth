@@ -164,7 +164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Labyrinth
   rotationLimit: 20
-  rotationStep: 1
+  rotationStep: 1.5
   labyrinth:
     tiles:
       floor: {fileID: 7404073012787072777, guid: c29a727ad80494800849ad074105884a, type: 3}
