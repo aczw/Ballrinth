@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Systems")]
     [SerializeField] private Labyrinth labyrinth;
+    [SerializeField] private Timer timer;
 
     [Header("Canvas Objects")]
     [SerializeField] private GameObject mainMenu;
@@ -37,6 +38,13 @@ public class GameManager : MonoBehaviour
     private void Update() {
         if (currentState != GameState.InGame) return;
 
+        Debug.Log($"Time left: {timer.GetCurrentTime()}");
+
+        if (timer.IsFinished()) {
+            Debug.Log("GAME DONE!!!!");
+            return;
+        }
+
         input = new FrameInputBundle {
             rotateUp = Keyboard.current.upArrowKey.isPressed,
             rotateDown = Keyboard.current.downArrowKey.isPressed,
@@ -60,6 +68,7 @@ public class GameManager : MonoBehaviour
 
         // Set up first labyrinth
         labyrinth.Generate(currentStage + 1, currentStage + 1);
+        timer.Restart();
 
         currentState = GameState.InGame;
     }
@@ -73,6 +82,7 @@ public class GameManager : MonoBehaviour
         currentState = GameState.Transitioning;
 
         // End current labyrinth run
+        timer.Pause();
         labyrinth.Clear();
 
         // Set up intermission
@@ -95,6 +105,7 @@ public class GameManager : MonoBehaviour
         // Set up next stage
         currentStage++;
         labyrinth.Generate(currentStage + 1, currentStage + 1);
+        timer.Resume();
 
         currentState = GameState.InGame;
     }
