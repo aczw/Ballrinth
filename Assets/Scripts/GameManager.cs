@@ -3,6 +3,15 @@ using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
+    public enum State
+    {
+        MainMenu,
+        InGame,
+        Intermission,
+        End,
+        Transitioning
+    }
+
     [Header("Configuration")]
     [SerializeField] [Min(1)] private int beginningStage;
 
@@ -13,16 +22,22 @@ public class GameManager : MonoBehaviour
     [Header("Canvas Objects")]
     [SerializeField] private GameObject mainMenu;
     [SerializeField] private GameObject intermission;
+    [SerializeField] private GameObject outcome;
 
-    // Current run state
-    private int currentStage;
-    private GameState currentState;
-
-    // Per-frame state
+    /// <summary>
+    ///     Per-frame state.
+    /// </summary>
     private FrameInputBundle input;
 
-    // Overall game state
+    /// <summary>
+    ///     Overall game state (tracked across runs).
+    /// </summary>
     private int maxStagesEscaped;
+
+    /// <summary>
+    ///     Current run state.
+    /// </summary>
+    private RunState run;
 
     public static GameManager I { get; private set; }
 
@@ -34,13 +49,19 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        currentStage = beginningStage;
-        currentState = GameState.MainMenu;
+        input = new FrameInputBundle();
+
+        run = new RunState {
+            won = false,
+            stage = beginningStage,
+            state = State.MainMenu
+        };
+
         maxStagesEscaped = 0;
     }
 
     private void Update() {
-        if (currentState != GameState.InGame) return;
+        if (run.state != State.InGame) return;
 
         Debug.Log($"Time left: {timer.GetCurrentTime()}");
 
@@ -60,30 +81,30 @@ public class GameManager : MonoBehaviour
     private void FixedUpdate() => labyrinth.ProcessRotation(input);
 
     public void StartGame() {
-        if (currentState != GameState.MainMenu) {
-            Debug.LogError($"Incorrect game state: should be on the main menu, instead we're on {currentState}");
+        if (run.state != State.MainMenu) {
+            Debug.LogError($"Incorrect game state: should be on the main menu, instead we're on {run.state}");
             return;
         }
 
-        currentState = GameState.Transitioning;
+        run.state = State.Transitioning;
 
         // Clear main menu UI
         mainMenu.SetActive(false);
 
         // Set up first labyrinth
-        labyrinth.Generate(currentStage + 1, currentStage + 1);
+        labyrinth.Generate(run.stage + 1, run.stage + 1);
         timer.Restart();
 
-        currentState = GameState.InGame;
+        run.state = State.InGame;
     }
 
     public void EscapeStage() {
-        if (currentState != GameState.InGame) {
-            Debug.LogError($"Incorrect game state: should be in-game, instead we're on {currentState}!");
+        if (run.state != State.InGame) {
+            Debug.LogError($"Incorrect game state: should be in-game, instead we're on {run.state}!");
             return;
         }
 
-        currentState = GameState.Transitioning;
+        run.state = State.Transitioning;
 
         // End current labyrinth run
         timer.Pause();
@@ -92,35 +113,35 @@ public class GameManager : MonoBehaviour
         // Set up intermission
         intermission.SetActive(true);
 
-        currentState = GameState.Intermission;
+        run.state = State.Intermission;
     }
 
     public void EnterNextStage() {
-        if (currentState != GameState.Intermission) {
-            Debug.LogError($"Incorrect game state: should be in the intermission, instead we're on {currentState}!");
+        if (run.state != State.Intermission) {
+            Debug.LogError($"Incorrect game state: should be in the intermission, instead we're on {run.state}!");
             return;
         }
 
-        currentState = GameState.Transitioning;
+        run.state = State.Transitioning;
 
         // Clear intermission UI
         intermission.SetActive(false);
 
         // Set up next stage
-        currentStage++;
-        labyrinth.Generate(currentStage + 1, currentStage + 1);
+        run.stage++;
+        labyrinth.Generate(run.stage + 1, run.stage + 1);
         timer.Resume();
 
-        currentState = GameState.InGame;
+        run.state = State.InGame;
     }
 
     public void EndGame() {
-        if (currentState != GameState.InGame) {
-            Debug.LogError($"Incorrect game state: should be in-game, instead we're on {currentState}!");
+        if (run.state != State.InGame) {
+            Debug.LogError($"Incorrect game state: should be in-game, instead we're on {run.state}!");
             return;
         }
 
-        currentState = GameState.Transitioning;
+        run.state = State.Transitioning;
 
         // Game can end before we run out of time
         if (!timer.IsFinished()) timer.Pause();
@@ -128,28 +149,18 @@ public class GameManager : MonoBehaviour
         // End current labyrinth run and wrap up any final game state
         labyrinth.Clear();
 
-        var wonGame = false;
-        if (currentStage >= maxStagesEscaped) {
-            wonGame = true;
-            maxStagesEscaped = currentStage;
+        if (run.stage >= maxStagesEscaped) {
+            run.won = true;
+            maxStagesEscaped = run.stage;
         }
 
-        Debug.Log(wonGame
-                      ? $"YOU WON THE GAME WITH {maxStagesEscaped} STAGES CLEARED!"
-                      : $"YOU LOST! NUM STAGES ESCAPED: {currentStage}, HIGH SCORE: {maxStagesEscaped}");
+        run.state = State.End;
 
         // Set up final outcome screen
-        // TODO!
-
-        currentState = GameState.End;
+        outcome.SetActive(true);
     }
 
-    private enum GameState
-    {
-        MainMenu,
-        InGame,
-        Intermission,
-        End,
-        Transitioning
-    }
+    public RunState GetRunState() => run;
+
+    public int GetMaxStagesEscaped() => maxStagesEscaped;
 }
