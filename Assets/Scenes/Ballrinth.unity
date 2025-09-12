@@ -506,8 +506,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1411927311}
-        m_TargetAssemblyTypeName: MainMenuCanvas, Assembly-CSharp
+      - m_Target: {fileID: 1782121201}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: StartGame
         m_Mode: 1
         m_Arguments:
@@ -639,9 +639,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1411927311}
-        m_TargetAssemblyTypeName: MainMenuCanvas, Assembly-CSharp
-        m_MethodName: StartGame
+      - m_Target: {fileID: 1782121201}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: EnterNextStage
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1395,6 +1395,7 @@ MonoBehaviour:
   beginningStage: 1
   labyrinth: {fileID: 1100234014}
   mainMenu: {fileID: 1411927306}
+  intermission: {fileID: 1788438642}
 --- !u!1 &1788438642
 GameObject:
   m_ObjectHideFlags: 0
