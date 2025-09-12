@@ -17,6 +17,11 @@ public class Labyrinth : MonoBehaviour
         var rowBounds = new Vector2(-rowOffset, rows - rowOffset - 1f);
         var colBounds = new Vector2(-colOffset, columns - colOffset - 1f);
 
+        if (transform.localEulerAngles != Vector3.zero) {
+            transform.localEulerAngles = Vector3.zero;
+            Debug.LogWarning($"Labyrinth rotation is not zero: {transform.localEulerAngles}");
+        }
+
         // Depending on maze size parity the exit is spawned in a different location
         var exitTilePosition =
             rows % 2 == 0 ? new Vector2(colBounds.x, rowBounds.x) : new Vector2(colBounds.y, rowBounds.x);

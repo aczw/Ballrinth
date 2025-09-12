@@ -34,10 +34,6 @@ public class GameManager : MonoBehaviour
         currentState = GameState.MainMenu;
     }
 
-    private void Start() {
-        labyrinth.Generate(currentStage + 1, currentStage + 1);
-    }
-
     private void Update() {
         if (currentState != GameState.InGame) return;
 
@@ -57,7 +53,13 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        currentState = GameState.Transitioning;
+
+        // Clear main menu UI
         mainMenu.SetActive(false);
+
+        // Set up first labyrinth
+        labyrinth.Generate(currentStage + 1, currentStage + 1);
 
         currentState = GameState.InGame;
     }
@@ -68,11 +70,15 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        currentState = GameState.Transitioning;
+
+        // End current labyrinth run
         labyrinth.Clear();
 
-        currentState = GameState.Intermission;
-
+        // Set up intermission
         intermission.SetActive(true);
+
+        currentState = GameState.Intermission;
     }
 
     public void EnterNextStage() {
@@ -81,18 +87,23 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        currentState = GameState.Transitioning;
+
+        // Clear intermission UI
         intermission.SetActive(false);
 
-        currentState = GameState.InGame;
-
+        // Set up next stage
         currentStage++;
         labyrinth.Generate(currentStage + 1, currentStage + 1);
+
+        currentState = GameState.InGame;
     }
 
     private enum GameState
     {
         MainMenu,
         InGame,
-        Intermission
+        Intermission,
+        Transitioning
     }
 }
