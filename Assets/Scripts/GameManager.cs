@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Canvas Objects")]
     [SerializeField] private GameObject mainMenu;
+    [SerializeField] private GameObject intermission;
 
     // Overall game state
     private int currentStage;
@@ -39,7 +40,7 @@ public class GameManager : MonoBehaviour
     }
 
     private void Update() {
-        if (currentState == GameState.MainMenu) return;
+        if (currentState != GameState.InGame) return;
 
         input = new FrameInputBundle {
             rotateUp = Keyboard.current.upArrowKey.isPressed,
@@ -53,16 +54,38 @@ public class GameManager : MonoBehaviour
 
     public void StartGame() {
         if (currentState != GameState.MainMenu) {
-            Debug.LogError($"Incorrect game state! Should be on the main menu, instead we're on {currentState}");
+            Debug.LogError($"Incorrect game state: should be on the main menu, instead we're on {currentState}");
             return;
         }
 
         mainMenu.SetActive(false);
+
         currentState = GameState.InGame;
     }
 
     public void EscapeStage() {
+        if (currentState != GameState.InGame) {
+            Debug.LogError($"Incorrect game state: should be in-game, instead we're on {currentState}!");
+            return;
+        }
+
         labyrinth.Clear();
+
+        currentState = GameState.Intermission;
+
+        intermission.SetActive(true);
+    }
+
+    public void EnterNextStage() {
+        if (currentState != GameState.Intermission) {
+            Debug.LogError($"Incorrect game state: should be in the intermission, instead we're on {currentState}!");
+            return;
+        }
+
+        intermission.SetActive(false);
+
+        currentState = GameState.InGame;
+
         currentStage++;
         labyrinth.Generate(currentStage + 1, currentStage + 1);
     }
@@ -70,6 +93,7 @@ public class GameManager : MonoBehaviour
     private enum GameState
     {
         MainMenu,
-        InGame
+        InGame,
+        Intermission
     }
 }
