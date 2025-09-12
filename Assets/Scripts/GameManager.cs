@@ -160,6 +160,29 @@ public class GameManager : MonoBehaviour
         outcome.SetActive(true);
     }
 
+    public void RestartGame() {
+        if (run.state != State.End) {
+            Debug.LogError($"Incorrect game state: should be at the end, instead we're on {run.state}!");
+            return;
+        }
+
+        run.state = State.Transitioning;
+
+        // Clear outcome UI
+        outcome.SetActive(false);
+
+        // Reset all state as needed and launch the labyrinth again
+        input = new FrameInputBundle();
+
+        run.won = false;
+        run.stage = beginningStage;
+
+        labyrinth.Generate(run.stage + 1, run.stage + 1);
+        timer.Restart();
+
+        run.state = State.InGame;
+    }
+
     public RunState GetRunState() => run;
 
     public int GetMaxStagesEscaped() => maxStagesEscaped;
