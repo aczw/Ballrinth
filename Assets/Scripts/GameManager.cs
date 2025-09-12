@@ -9,8 +9,12 @@ public class GameManager : MonoBehaviour
     [Header("Systems")]
     [SerializeField] private Labyrinth labyrinth;
 
+    [Header("Canvas Objects")]
+    [SerializeField] private GameObject mainMenu;
+
     // Overall game state
     private int currentStage;
+    private GameState currentState;
 
     // Per-frame state
     private FrameInputBundle input;
@@ -27,6 +31,7 @@ public class GameManager : MonoBehaviour
         }
 
         currentStage = beginningStage;
+        currentState = GameState.MainMenu;
     }
 
     private void Start() {
@@ -34,6 +39,8 @@ public class GameManager : MonoBehaviour
     }
 
     private void Update() {
+        if (currentState == GameState.MainMenu) return;
+
         input = new FrameInputBundle {
             rotateUp = Keyboard.current.upArrowKey.isPressed,
             rotateDown = Keyboard.current.downArrowKey.isPressed,
@@ -44,9 +51,25 @@ public class GameManager : MonoBehaviour
 
     private void FixedUpdate() => labyrinth.ProcessRotation(input);
 
+    public void StartGame() {
+        if (currentState != GameState.MainMenu) {
+            Debug.LogError($"Incorrect game state! Should be on the main menu, instead we're on {currentState}");
+            return;
+        }
+
+        mainMenu.SetActive(false);
+        currentState = GameState.InGame;
+    }
+
     public void EscapeStage() {
         labyrinth.Clear();
         currentStage++;
         labyrinth.Generate(currentStage + 1, currentStage + 1);
+    }
+
+    private enum GameState
+    {
+        MainMenu,
+        InGame
     }
 }

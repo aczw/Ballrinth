@@ -956,6 +956,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   beginningStage: 1
   labyrinth: {fileID: 1100234014}
+  mainMenu: {fileID: 1411927306}
 --- !u!1 &1943085585
 GameObject:
   m_ObjectHideFlags: 0
