@@ -3,20 +3,19 @@ using UnityEngine;
 
 public class Labyrinth : MonoBehaviour
 {
-    [SerializeField] private Prefabs prefabs;
+    [Header("Configuration")]
+    [SerializeField] private float rotationLimit;
+    [SerializeField] private float rotationStep;
 
-    private const float ROTATION_BOUND = 20f;
+    [Header("Prefabs")]
+    [SerializeField] private LabyrinthPieces labyrinth;
+    [SerializeField] private GameObject ball;
 
     public void Generate(int rows, int columns) {
         var rowOffset = Mathf.Floor(rows / 2f) + (rows % 2 == 0 ? -0.5f : 0f);
         var colOffset = Mathf.Floor(columns / 2f) + (rows % 2 == 0 ? -0.5f : 0f);
-
-        Debug.Log($"row offset: {rowOffset}, col offset: {colOffset}");
-
         var rowBounds = new Vector2(-rowOffset, rows - rowOffset - 1f);
         var colBounds = new Vector2(-colOffset, columns - colOffset - 1f);
-
-        Debug.Log($"row bounds: {rowBounds}, col bounds: {colBounds}");
 
         // Depending on maze size parity the exit is spawned in a different location
         var exitTilePosition =
@@ -25,56 +24,50 @@ public class Labyrinth : MonoBehaviour
         // Generate floor tiles
         for (var z = rowBounds.x; z <= rowBounds.y; ++z) {
             for (var x = colBounds.x; x <= colBounds.y; ++x) {
-                var tilePrefab = prefabs.labyrinth.tiles.floor;
+                var tilePrefab = labyrinth.tiles.floor;
 
-                if (exitTilePosition == new Vector2(x, z)) {
-                    tilePrefab = prefabs.labyrinth.tiles.exit;
+                if (Mathf.Approximately(exitTilePosition.x, x) && Mathf.Approximately(exitTilePosition.y, z)) {
+                    tilePrefab = labyrinth.tiles.exit;
                 }
 
                 Instantiate(tilePrefab, new Vector3(x, -0.125f, z), Quaternion.identity, transform);
 
                 // Spawn ball in the top left corner
                 if (Mathf.Approximately(z, rowBounds.y) && Mathf.Approximately(x, colBounds.x)) {
-                    Instantiate(prefabs.ball, new Vector3(x, 5f, z), Quaternion.identity);
+                    Instantiate(ball, new Vector3(x, 5f, z), Quaternion.identity);
                 }
             }
         }
 
-        var wallT = Instantiate(prefabs.labyrinth.wall,
-                                new Vector3(0f, 0.25f, rowBounds.y + 0.5f + 0.125f),
-                                Quaternion.identity, transform);
-        var wallB = Instantiate(prefabs.labyrinth.wall,
-                                new Vector3(0f, 0.25f, rowBounds.x - 0.5f - 0.125f),
-                                Quaternion.identity, transform);
-        var wallL = Instantiate(prefabs.labyrinth.wall,
-                                new Vector3(colBounds.x - 0.5f - 0.125f, 0.25f, 0f),
-                                Quaternion.Euler(0f, 90f, 0f), transform);
-        var wallR = Instantiate(prefabs.labyrinth.wall,
-                                new Vector3(colBounds.y + 0.5f + 0.125f, 0.25f, 0f),
-                                Quaternion.Euler(0f, 90f, 0f), transform);
+        var wallT = Instantiate(labyrinth.wall,
+                                new Vector3(0f, 0.25f, rowBounds.y + 0.5f + 0.125f), Quaternion.identity, transform);
+        var wallB = Instantiate(labyrinth.wall,
+                                new Vector3(0f, 0.25f, rowBounds.x - 0.5f - 0.125f), Quaternion.identity, transform);
+        var wallL = Instantiate(labyrinth.wall,
+                                new Vector3(colBounds.x - 0.5f - 0.125f, 0.25f, 0f), Quaternion.Euler(0f, 90f, 0f),
+                                transform);
+        var wallR = Instantiate(labyrinth.wall,
+                                new Vector3(colBounds.y + 0.5f + 0.125f, 0.25f, 0f), Quaternion.Euler(0f, 90f, 0f),
+                                transform);
 
-        var columnScale = new Vector3(columns, 1f, prefabs.labyrinth.wall.transform.localScale.z);
+        var columnScale = new Vector3(columns, 1f, labyrinth.wall.transform.localScale.z);
         wallT.transform.localScale = columnScale;
         wallB.transform.localScale = columnScale;
 
-        var rowScale = new Vector3(rows, 1f, prefabs.labyrinth.wall.transform.localScale.z);
+        var rowScale = new Vector3(rows, 1f, labyrinth.wall.transform.localScale.z);
         wallL.transform.localScale = rowScale;
         wallR.transform.localScale = rowScale;
 
-        Instantiate(prefabs.labyrinth.corner,
-                    new Vector3(colBounds.x - 0.625f, 0.25f, rowBounds.y + 0.625f),
-                    Quaternion.identity, transform);
-        Instantiate(prefabs.labyrinth.corner,
-                    new Vector3(colBounds.y + 0.625f, 0.25f, rowBounds.y + 0.625f),
-                    Quaternion.identity, transform);
-        Instantiate(prefabs.labyrinth.corner,
-                    new Vector3(colBounds.x - 0.625f, 0.25f, rowBounds.x - 0.625f),
-                    Quaternion.identity, transform);
-        Instantiate(prefabs.labyrinth.corner,
-                    new Vector3(colBounds.y + 0.625f, 0.25f, rowBounds.x - 0.625f),
-                    Quaternion.identity, transform);
+        Instantiate(labyrinth.corner,
+                    new Vector3(colBounds.x - 0.625f, 0.25f, rowBounds.y + 0.625f), Quaternion.identity, transform);
+        Instantiate(labyrinth.corner,
+                    new Vector3(colBounds.y + 0.625f, 0.25f, rowBounds.y + 0.625f), Quaternion.identity, transform);
+        Instantiate(labyrinth.corner,
+                    new Vector3(colBounds.x - 0.625f, 0.25f, rowBounds.x - 0.625f), Quaternion.identity, transform);
+        Instantiate(labyrinth.corner,
+                    new Vector3(colBounds.y + 0.625f, 0.25f, rowBounds.x - 0.625f), Quaternion.identity, transform);
 
-        Debug.Log($"generated with {rows} rows, {columns} columns");
+        Debug.Log($"Generated with {rows} rows, {columns} columns");
     }
 
     public void Clear() {
@@ -82,8 +75,7 @@ public class Labyrinth : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        var ball = GameObject.FindWithTag("Player");
-        Destroy(ball);
+        Destroy(GameObject.FindWithTag("Player"));
 
         transform.localEulerAngles = Vector3.zero;
     }
@@ -92,18 +84,18 @@ public class Labyrinth : MonoBehaviour
         var deltaVertical = 0f;
         var deltaHorizontal = 0f;
 
-        if (up) deltaVertical += 1f;
-        if (down) deltaVertical -= 1f;
-        if (left) deltaHorizontal += 1f;
-        if (right) deltaHorizontal -= 1f;
+        if (up) deltaVertical += rotationStep;
+        if (down) deltaVertical -= rotationStep;
+        if (left) deltaHorizontal += rotationStep;
+        if (right) deltaHorizontal -= rotationStep;
 
         // Unity normalizes the angle to be between [0, 360) so we correct that here
         var rotation = transform.localEulerAngles;
         if (rotation.x > 180f) rotation.x -= 360f;
         if (rotation.z > 180f) rotation.z -= 360f;
-        
-        var vertical = Mathf.Clamp(rotation.x + deltaVertical,-ROTATION_BOUND, ROTATION_BOUND);
-        var horizontal = Mathf.Clamp(rotation.z + deltaHorizontal,-ROTATION_BOUND, ROTATION_BOUND);
+
+        var vertical = Mathf.Clamp(rotation.x + deltaVertical, -rotationLimit, rotationLimit);
+        var horizontal = Mathf.Clamp(rotation.z + deltaHorizontal, -rotationLimit, rotationLimit);
         transform.localEulerAngles = new Vector3(vertical, 0f, horizontal);
     }
 
@@ -121,12 +113,5 @@ public class Labyrinth : MonoBehaviour
         public GameObject corner;
         public GameObject wall;
         public GameObject wallEnd;
-    }
-
-    [Serializable]
-    private struct Prefabs
-    {
-        public LabyrinthPieces labyrinth;
-        public GameObject ball;
     }
 }

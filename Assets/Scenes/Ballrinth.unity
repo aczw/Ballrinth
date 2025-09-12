@@ -163,15 +163,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bfcb217dbb204672b67b95ec5524678, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Labyrinth
-  prefabs:
-    labyrinth:
-      tiles:
-        floor: {fileID: 7404073012787072777, guid: c29a727ad80494800849ad074105884a, type: 3}
-        exit: {fileID: 7404073012787072777, guid: fe6207798827e4344a9041dfaf50c393, type: 3}
-      corner: {fileID: 914200451816339944, guid: 74046fee20a9f433096d2b1fadf7fb5b, type: 3}
-      wall: {fileID: 5545285171998421983, guid: 4eb39804e94194ae98fc7e91a153d14a, type: 3}
-      wallEnd: {fileID: 5945354608876713062, guid: 8716a2f3ab32c49338655c2a48919210, type: 3}
-    ball: {fileID: 8491700461530595852, guid: ac1165a0a364f4376945f8f19e244e0b, type: 3}
+  rotationLimit: 20
+  rotationStep: 1
+  labyrinth:
+    tiles:
+      floor: {fileID: 7404073012787072777, guid: c29a727ad80494800849ad074105884a, type: 3}
+      exit: {fileID: 7404073012787072777, guid: fe6207798827e4344a9041dfaf50c393, type: 3}
+    corner: {fileID: 914200451816339944, guid: 74046fee20a9f433096d2b1fadf7fb5b, type: 3}
+    wall: {fileID: 5545285171998421983, guid: 4eb39804e94194ae98fc7e91a153d14a, type: 3}
+    wallEnd: {fileID: 5945354608876713062, guid: 8716a2f3ab32c49338655c2a48919210, type: 3}
+  ball: {fileID: 8491700461530595852, guid: ac1165a0a364f4376945f8f19e244e0b, type: 3}
 --- !u!1 &1477538910
 GameObject:
   m_ObjectHideFlags: 0
