@@ -3,14 +3,17 @@ using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
-    // Systems
+    [Header("Configuration")]
+    [SerializeField] [Min(1)] private int beginningStage;
+
+    [Header("Systems")]
     [SerializeField] private Labyrinth labyrinth;
+
+    // Overall game state
+    private int currentStage;
 
     // Per-frame state
     private FrameInputBundle input;
-
-    // Game state
-    private int stage;
 
     public static GameManager I { get; private set; }
 
@@ -23,11 +26,11 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        stage = 3;
+        currentStage = beginningStage;
     }
 
     private void Start() {
-        labyrinth.Generate(stage + 1, stage + 1);
+        labyrinth.Generate(currentStage + 1, currentStage + 1);
     }
 
     private void Update() {
@@ -39,14 +42,11 @@ public class GameManager : MonoBehaviour
         };
     }
 
-    private void FixedUpdate() =>
-        labyrinth.ProcessRotation(input.rotateUp, input.rotateDown, input.rotateLeft, input.rotateRight);
+    private void FixedUpdate() => labyrinth.ProcessRotation(input);
 
     public void EscapeStage() {
-        Debug.Log($"Escaped stage {stage}!");
-
         labyrinth.Clear();
-        stage++;
-        labyrinth.Generate(stage + 1, stage + 1);
+        currentStage++;
+        labyrinth.Generate(currentStage + 1, currentStage + 1);
     }
 }

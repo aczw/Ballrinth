@@ -4,8 +4,8 @@ using UnityEngine;
 public class Labyrinth : MonoBehaviour
 {
     [Header("Configuration")]
-    [SerializeField] private float rotationLimit;
-    [SerializeField] private float rotationStep;
+    [SerializeField] [Min(0f)] private float rotationLimit;
+    [SerializeField] [Min(0f)] private float rotationStep;
 
     [Header("Prefabs")]
     [SerializeField] private LabyrinthPieces labyrinth;
@@ -80,14 +80,14 @@ public class Labyrinth : MonoBehaviour
         transform.localEulerAngles = Vector3.zero;
     }
 
-    public void ProcessRotation(bool up, bool down, bool left, bool right) {
+    public void ProcessRotation(FrameInputBundle input) {
         var deltaVertical = 0f;
         var deltaHorizontal = 0f;
 
-        if (up) deltaVertical += rotationStep;
-        if (down) deltaVertical -= rotationStep;
-        if (left) deltaHorizontal += rotationStep;
-        if (right) deltaHorizontal -= rotationStep;
+        if (input.rotateUp) deltaVertical += rotationStep;
+        if (input.rotateDown) deltaVertical -= rotationStep;
+        if (input.rotateLeft) deltaHorizontal += rotationStep;
+        if (input.rotateRight) deltaHorizontal -= rotationStep;
 
         // Unity normalizes the angle to be between [0, 360) so we correct that here
         var rotation = transform.localEulerAngles;
