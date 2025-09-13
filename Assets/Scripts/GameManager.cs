@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject mainMenu;
     [SerializeField] private GameObject intermission;
     [SerializeField] private GameObject outcome;
+    [SerializeField] private GameObject timerDisplay;
 
     /// <summary>
     ///     Per-frame state.
@@ -87,6 +88,7 @@ public class GameManager : MonoBehaviour
         // Set up first labyrinth
         labyrinth.Generate(run.stage + 1, run.stage + 1);
         timer.Restart();
+        timerDisplay.SetActive(true);
 
         state.status = GameState.Status.InGame;
     }
@@ -141,6 +143,7 @@ public class GameManager : MonoBehaviour
 
         // End current labyrinth run and wrap up any final game state
         labyrinth.Clear();
+        timerDisplay.SetActive(false);
 
         if (run.stage >= state.maxStagesEscaped) {
             run.won = true;
@@ -170,6 +173,7 @@ public class GameManager : MonoBehaviour
         // Launch the labyrinth again
         labyrinth.Generate(run.stage + 1, run.stage + 1);
         timer.Restart();
+        timerDisplay.SetActive(true);
 
         state.status = GameState.Status.InGame;
     }
@@ -196,4 +200,6 @@ public class GameManager : MonoBehaviour
 
     public RunState GetRunState() => run;
     public GameState GetGameState() => state;
+
+    public float GetRemainingTime() => timer.GetCurrentTime();
 }
