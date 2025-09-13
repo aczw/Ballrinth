@@ -4,4 +4,8 @@ public struct FrameInputBundle
     public bool rotateDown;
     public bool rotateLeft;
     public bool rotateRight;
+
+    public bool powerUpSlotOne;
+    public bool powerUpSlotTwo;
+    public bool powerUpSlotThree;
 }

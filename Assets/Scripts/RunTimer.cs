@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Timer : MonoBehaviour
+public class RunTimer : MonoBehaviour
 {
     [Header("Configuration")]
     [SerializeField] [Min(0f)] private float duration;

@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Systems")]
     [SerializeField] private Labyrinth labyrinth;
-    [SerializeField] private Timer timer;
+    [SerializeField] private RunTimer timer;
 
     [Header("Canvas Objects")]
     [SerializeField] private GameObject mainMenu;
@@ -57,8 +57,6 @@ public class GameManager : MonoBehaviour
     private void Update() {
         if (state.status != GameState.Status.InGame) return;
 
-        Debug.Log($"Time left: {timer.GetCurrentTime()}");
-
         if (timer.IsFinished()) {
             EndGame();
             return;
@@ -68,8 +66,22 @@ public class GameManager : MonoBehaviour
             rotateUp = Keyboard.current.upArrowKey.isPressed,
             rotateDown = Keyboard.current.downArrowKey.isPressed,
             rotateLeft = Keyboard.current.leftArrowKey.isPressed,
-            rotateRight = Keyboard.current.rightArrowKey.isPressed
+            rotateRight = Keyboard.current.rightArrowKey.isPressed,
+
+            powerUpSlotOne = Keyboard.current.zKey.wasPressedThisFrame,
+            powerUpSlotTwo = Keyboard.current.xKey.wasPressedThisFrame,
+            powerUpSlotThree = Keyboard.current.cKey.wasPressedThisFrame
         };
+
+        if (input.powerUpSlotOne) {
+            Debug.Log("Z pressed!");
+        }
+        else if (input.powerUpSlotTwo) {
+            Debug.Log("X pressed!");
+        }
+        else if (input.powerUpSlotThree) {
+            Debug.Log("C pressed!");
+        }
     }
 
     private void FixedUpdate() => labyrinth.ProcessRotation(input);
