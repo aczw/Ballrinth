@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     [Header("Systems")]
     [SerializeField] private Labyrinth labyrinth;
     [SerializeField] private RunTimer timer;
+    [SerializeField] private Inventory inventory;
 
     [Header("Canvas Objects")]
     [SerializeField] private GameObject mainMenu;
@@ -19,7 +20,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     ///     Per-frame state.
     /// </summary>
-    private FrameInputBundle input;
+    private RotationInputBundle rotationInput;
 
     /// <summary>
     ///     Current run state.
@@ -41,7 +42,7 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        input = new FrameInputBundle();
+        rotationInput = new RotationInputBundle();
 
         state = new GameState {
             maxStagesEscaped = 0,
@@ -62,29 +63,28 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        input = new FrameInputBundle {
+        rotationInput = new RotationInputBundle {
             rotateUp = Keyboard.current.upArrowKey.isPressed,
             rotateDown = Keyboard.current.downArrowKey.isPressed,
             rotateLeft = Keyboard.current.leftArrowKey.isPressed,
             rotateRight = Keyboard.current.rightArrowKey.isPressed,
-
-            powerUpSlotOne = Keyboard.current.zKey.wasPressedThisFrame,
-            powerUpSlotTwo = Keyboard.current.xKey.wasPressedThisFrame,
-            powerUpSlotThree = Keyboard.current.cKey.wasPressedThisFrame
         };
 
-        if (input.powerUpSlotOne) {
+        if (Keyboard.current.zKey.wasPressedThisFrame) {
             Debug.Log("Z pressed!");
+            inventory.TryUse(Inventory.Slot.One);
         }
-        else if (input.powerUpSlotTwo) {
+        else if (Keyboard.current.xKey.wasPressedThisFrame) {
             Debug.Log("X pressed!");
+            inventory.TryUse(Inventory.Slot.Two);
         }
-        else if (input.powerUpSlotThree) {
+        else if (Keyboard.current.cKey.wasPressedThisFrame) {
             Debug.Log("C pressed!");
+            inventory.TryUse(Inventory.Slot.Three);
         }
     }
 
-    private void FixedUpdate() => labyrinth.ProcessRotation(input);
+    private void FixedUpdate() => labyrinth.ProcessRotation(rotationInput);
 
     public void StartGame() {
         if (state.status != GameState.Status.MainMenu) {
@@ -178,7 +178,7 @@ public class GameManager : MonoBehaviour
 
         // Clear outcome UI and reset all state as needed
         outcome.SetActive(false);
-        input = new FrameInputBundle();
+        rotationInput = new RotationInputBundle();
         run.won = false;
         run.stage = beginningStage;
 
@@ -200,7 +200,7 @@ public class GameManager : MonoBehaviour
 
         // Clear outcome UI and reset all state as needed
         outcome.SetActive(false);
-        input = new FrameInputBundle();
+        rotationInput = new RotationInputBundle();
         run.won = false;
         run.stage = beginningStage;
 

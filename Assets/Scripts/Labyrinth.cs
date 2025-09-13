@@ -85,7 +85,7 @@ public class Labyrinth : MonoBehaviour
         transform.localEulerAngles = Vector3.zero;
     }
 
-    public void ProcessRotation(FrameInputBundle input) {
+    public void ProcessRotation(RotationInputBundle input) {
         var deltaVertical = 0f;
         var deltaHorizontal = 0f;
 
