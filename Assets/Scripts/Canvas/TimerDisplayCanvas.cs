@@ -9,6 +9,6 @@ public class TimerDisplayCanvas : MonoBehaviour
         if (GameManager.I.GetGameState().status != GameState.Status.InGame) return;
 
         var time = GameManager.I.GetRemainingTime();
-        currentTime.text = Mathf.RoundToInt(time).ToString();
+        currentTime.text = time.ToString("F2");
     }
 }

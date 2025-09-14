@@ -1854,8 +1854,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1782121201}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+      - m_Target: {fileID: 1788438647}
+        m_TargetAssemblyTypeName: IntermissionCanvas, Assembly-CSharp
         m_MethodName: EnterNextStage
         m_Mode: 1
         m_Arguments:
@@ -4029,6 +4029,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::IntermissionCanvas
   dummyPowerUp: {fileID: 2151285975867073169, guid: b3da60400a04c4c08b570485bd614897, type: 3}
   powerUpChoices: {fileID: 1349571891}
+  choiceButtons:
+  - {fileID: 771348601}
+  - {fileID: 245736913}
+  - {fileID: 1535833185}
 --- !u!1 &1811296680
 GameObject:
   m_ObjectHideFlags: 0

@@ -24,4 +24,10 @@ public class InventoryDisplay : MonoBehaviour
             slotDisplay.isOn = fullSlots.Contains(slotValue);
         }
     }
+
+    private void OnEnable() {
+        slotOne.isOn = false;
+        slotTwo.isOn = false;
+        slotThree.isOn = false;
+    }
 }
