@@ -18,8 +18,8 @@ public class Labyrinth : MonoBehaviour
         var colBounds = new Vector2(-colOffset, columns - colOffset - 1f);
 
         if (transform.localEulerAngles != Vector3.zero) {
-            transform.localEulerAngles = Vector3.zero;
             Debug.LogWarning($"Labyrinth rotation is not zero: {transform.localEulerAngles}");
+            transform.localEulerAngles = Vector3.zero;
         }
 
         // Depending on maze size parity the exit is spawned in a different location

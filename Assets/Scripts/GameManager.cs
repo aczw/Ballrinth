@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,6 +17,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject intermission;
     [SerializeField] private GameObject outcome;
     [SerializeField] private GameObject timerDisplay;
+    [SerializeField] private GameObject inventoryDisplay;
 
     /// <summary>
     ///     Per-frame state.
@@ -67,7 +69,7 @@ public class GameManager : MonoBehaviour
             rotateUp = Keyboard.current.upArrowKey.isPressed,
             rotateDown = Keyboard.current.downArrowKey.isPressed,
             rotateLeft = Keyboard.current.leftArrowKey.isPressed,
-            rotateRight = Keyboard.current.rightArrowKey.isPressed,
+            rotateRight = Keyboard.current.rightArrowKey.isPressed
         };
 
         if (Keyboard.current.zKey.wasPressedThisFrame) {
@@ -101,6 +103,7 @@ public class GameManager : MonoBehaviour
         labyrinth.Generate(run.stage + 1, run.stage + 1);
         timer.Restart();
         timerDisplay.SetActive(true);
+        inventoryDisplay.SetActive(true);
 
         state.status = GameState.Status.InGame;
     }
@@ -156,6 +159,7 @@ public class GameManager : MonoBehaviour
         // End current labyrinth run and wrap up any final game state
         labyrinth.Clear();
         timerDisplay.SetActive(false);
+        inventoryDisplay.SetActive(false);
 
         if (run.stage >= state.maxStagesEscaped) {
             run.won = true;
@@ -186,6 +190,7 @@ public class GameManager : MonoBehaviour
         labyrinth.Generate(run.stage + 1, run.stage + 1);
         timer.Restart();
         timerDisplay.SetActive(true);
+        inventoryDisplay.SetActive(true);
 
         state.status = GameState.Status.InGame;
     }
@@ -214,4 +219,5 @@ public class GameManager : MonoBehaviour
     public GameState GetGameState() => state;
 
     public float GetRemainingTime() => timer.GetCurrentTime();
+    public HashSet<Inventory.Slot> GetFullSlots() => inventory.GetFullSlots();
 }
