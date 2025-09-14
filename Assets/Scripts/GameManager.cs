@@ -73,15 +73,12 @@ public class GameManager : MonoBehaviour
         };
 
         if (Keyboard.current.zKey.wasPressedThisFrame) {
-            Debug.Log("Z pressed!");
             inventory.TryUse(Inventory.Slot.One);
         }
         else if (Keyboard.current.xKey.wasPressedThisFrame) {
-            Debug.Log("X pressed!");
             inventory.TryUse(Inventory.Slot.Two);
         }
         else if (Keyboard.current.cKey.wasPressedThisFrame) {
-            Debug.Log("C pressed!");
             inventory.TryUse(Inventory.Slot.Three);
         }
     }
@@ -189,6 +186,7 @@ public class GameManager : MonoBehaviour
         // Launch the labyrinth again
         labyrinth.Generate(run.stage + 1, run.stage + 1);
         timer.Restart();
+        inventory.Clear();
         timerDisplay.SetActive(true);
         inventoryDisplay.SetActive(true);
 
@@ -206,6 +204,7 @@ public class GameManager : MonoBehaviour
         // Clear outcome UI and reset all state as needed
         outcome.SetActive(false);
         rotationInput = new RotationInputBundle();
+        inventory.Clear();
         run.won = false;
         run.stage = beginningStage;
 
@@ -219,5 +218,7 @@ public class GameManager : MonoBehaviour
     public GameState GetGameState() => state;
 
     public float GetRemainingTime() => timer.GetCurrentTime();
+
     public HashSet<Inventory.Slot> GetFullSlots() => inventory.GetFullSlots();
+    public void AddPowerUpToInventory(IPowerUp powerUp) => inventory.Add(powerUp);
 }

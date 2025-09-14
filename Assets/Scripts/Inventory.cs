@@ -59,4 +59,10 @@ public class Inventory : MonoBehaviour
 
         return fullSlots;
     }
+
+    public void Clear() {
+        slotOne = null;
+        slotTwo = null;
+        slotThree = null;
+    }
 }
