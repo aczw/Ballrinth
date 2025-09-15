@@ -75,20 +75,44 @@ public class Labyrinth : MonoBehaviour
         }
 
         // Generate inner walls
+        var wallEnd = WallSide.Right;
         for (var z = rowBounds.x + 1f; z <= rowBounds.y; ++z) {
             for (var x = colBounds.x; x <= colBounds.y - 1f; ++x) {
-                if (x + 2f > colBounds.y) {
-                    // If at the end, generate wall end + corner combo
-                    Instantiate(labyrinth.wallEnd,
-                                new Vector3(x - 0.0625f, 0.25f, z - 0.5f), Quaternion.identity, transform);
-                    Instantiate(labyrinth.corner,
-                                new Vector3(x + 0.5f, 0.25f, z - 0.5f), Quaternion.identity, transform);
-                }
-                else {
+                var wallEnd;
+
+
+                // If at the end, generate wall end + corner combo. Definition of "end" depends on which
+                // side we're currently considering as the wall end
+                switch (wallEnd) {
+                case WallSide.Left:
+                    if (Mathf.Approximately(x, colBounds.x)) {
+                        Instantiate(labyrinth.wallEnd,
+                                    new Vector3(x + 1f + 0.0625f, 0.25f, z - 0.5f), Quaternion.identity, transform);
+                        Instantiate(labyrinth.corner,
+                                    new Vector3(x - 0.5f, 0.25f, z - 0.5f), Quaternion.identity, transform);
+                    }
+
+                    continue;
+
+                case WallSide.Right:
+                    if (x + 2f > colBounds.y) {
+                        Instantiate(labyrinth.wallEnd,
+                                    new Vector3(x - 0.0625f, 0.25f, z - 0.5f), Quaternion.identity, transform);
+                        Instantiate(labyrinth.corner,
+                                    new Vector3(x + 0.5f, 0.25f, z - 0.5f), Quaternion.identity, transform);
+                    }
+
+                    continue;
+
+                default:
+                    // Generate a regular wall piece
                     Instantiate(labyrinth.wall,
                                 new Vector3(x, 0.25f, z - 0.5f), Quaternion.identity, transform);
                 }
             }
+
+            // Flip sides
+            wallEnd = wallEnd == WallSide.Right ? WallSide.Left : WallSide.Right;
         }
 
         GenerateOuterWalls(rows, columns, rowBounds, colBounds);
@@ -123,6 +147,13 @@ public class Labyrinth : MonoBehaviour
         var vertical = Mathf.Clamp(rotation.x + deltaVertical, -rotationLimit, rotationLimit);
         var horizontal = Mathf.Clamp(rotation.z + deltaHorizontal, -rotationLimit, rotationLimit);
         transform.localEulerAngles = new Vector3(vertical, 0f, horizontal);
+    }
+
+    private enum WallSide
+    {
+        Left,
+        Right,
+        Middle
     }
 
     [Serializable]
