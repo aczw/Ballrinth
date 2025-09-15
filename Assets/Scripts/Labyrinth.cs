@@ -74,45 +74,45 @@ public class Labyrinth : MonoBehaviour
             }
         }
 
+        var leftWallEndBounds = new Vector2(colBounds.x + 1f, colBounds.y);
+        var rightWallEndBounds = new Vector2(colBounds.x, colBounds.y - 1f);
+
         // Generate inner walls
-        var wallEnd = WallSide.Right;
+        var wallEnd = rows % 2 == 0 ? WallEnd.Right : WallEnd.Left;
         for (var z = rowBounds.x + 1f; z <= rowBounds.y; ++z) {
-            for (var x = colBounds.x; x <= colBounds.y - 1f; ++x) {
-                var wallEnd;
+            // Definition of "end" depends on which side we're currently considering as the wall end
+            var actualColBounds = wallEnd switch {
+                WallEnd.Left => leftWallEndBounds,
+                WallEnd.Right => rightWallEndBounds,
+                _ => throw new ArgumentOutOfRangeException()
+            };
 
-
-                // If at the end, generate wall end + corner combo. Definition of "end" depends on which
-                // side we're currently considering as the wall end
-                switch (wallEnd) {
-                case WallSide.Left:
-                    if (Mathf.Approximately(x, colBounds.x)) {
-                        Instantiate(labyrinth.wallEnd,
-                                    new Vector3(x + 1f + 0.0625f, 0.25f, z - 0.5f), Quaternion.identity, transform);
-                        Instantiate(labyrinth.corner,
-                                    new Vector3(x - 0.5f, 0.25f, z - 0.5f), Quaternion.identity, transform);
-                    }
-
+            for (var x = actualColBounds.x; x <= actualColBounds.y; ++x) {
+                // If at the left end, generate left wall end + corner combo. 
+                if (Mathf.Approximately(x, actualColBounds.x) && wallEnd == WallEnd.Left) {
+                    Instantiate(labyrinth.wallEnd,
+                                new Vector3(x + 0.0625f, 0.25f, z - 0.5f), Quaternion.identity, transform);
+                    Instantiate(labyrinth.corner,
+                                new Vector3(x - 0.5f, 0.25f, z - 0.5f), Quaternion.identity, transform);
                     continue;
-
-                case WallSide.Right:
-                    if (x + 2f > colBounds.y) {
-                        Instantiate(labyrinth.wallEnd,
-                                    new Vector3(x - 0.0625f, 0.25f, z - 0.5f), Quaternion.identity, transform);
-                        Instantiate(labyrinth.corner,
-                                    new Vector3(x + 0.5f, 0.25f, z - 0.5f), Quaternion.identity, transform);
-                    }
-
-                    continue;
-
-                default:
-                    // Generate a regular wall piece
-                    Instantiate(labyrinth.wall,
-                                new Vector3(x, 0.25f, z - 0.5f), Quaternion.identity, transform);
                 }
+
+                // If at the right end, generate right wall end + corner combo. 
+                if (x + 1f > actualColBounds.y && wallEnd == WallEnd.Right) {
+                    Instantiate(labyrinth.wallEnd,
+                                new Vector3(x - 0.0625f, 0.25f, z - 0.5f), Quaternion.identity, transform);
+                    Instantiate(labyrinth.corner,
+                                new Vector3(x + 0.5f, 0.25f, z - 0.5f), Quaternion.identity, transform);
+                    continue;
+                }
+
+                // Else, generate regular wall
+                Instantiate(labyrinth.wall,
+                            new Vector3(x, 0.25f, z - 0.5f), Quaternion.identity, transform);
             }
 
-            // Flip sides
-            wallEnd = wallEnd == WallSide.Right ? WallSide.Left : WallSide.Right;
+            // Ping pong
+            wallEnd = wallEnd == WallEnd.Right ? WallEnd.Left : WallEnd.Right;
         }
 
         GenerateOuterWalls(rows, columns, rowBounds, colBounds);
@@ -149,11 +149,10 @@ public class Labyrinth : MonoBehaviour
         transform.localEulerAngles = new Vector3(vertical, 0f, horizontal);
     }
 
-    private enum WallSide
+    private enum WallEnd
     {
         Left,
-        Right,
-        Middle
+        Right
     }
 
     [Serializable]
