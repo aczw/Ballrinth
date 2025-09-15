@@ -3898,7 +3898,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fed4f1451308c4380b91cbe4133ab019, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  beginningStage: 1
+  beginningStage: 4
   labyrinth: {fileID: 1100234014}
   timer: {fileID: 879839909}
   inventory: {fileID: 670250810}

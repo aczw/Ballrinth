@@ -11,6 +11,36 @@ public class Labyrinth : MonoBehaviour
     [SerializeField] private LabyrinthPieces labyrinth;
     [SerializeField] private GameObject ball;
 
+    private void GenerateOuterWalls(int rows, int columns, Vector2 rowBounds, Vector2 colBounds) {
+        var wallT = Instantiate(labyrinth.wall,
+                                new Vector3(0f, 0.25f, rowBounds.y + 0.5f + 0.125f), Quaternion.identity, transform);
+        var wallB = Instantiate(labyrinth.wall,
+                                new Vector3(0f, 0.25f, rowBounds.x - 0.5f - 0.125f), Quaternion.identity, transform);
+        var wallL = Instantiate(labyrinth.wall,
+                                new Vector3(colBounds.x - 0.5f - 0.125f, 0.25f, 0f), Quaternion.Euler(0f, 90f, 0f),
+                                transform);
+        var wallR = Instantiate(labyrinth.wall,
+                                new Vector3(colBounds.y + 0.5f + 0.125f, 0.25f, 0f), Quaternion.Euler(0f, 90f, 0f),
+                                transform);
+
+        var columnScale = new Vector3(columns, 1f, labyrinth.wall.transform.localScale.z);
+        wallT.transform.localScale = columnScale;
+        wallB.transform.localScale = columnScale;
+
+        var rowScale = new Vector3(rows, 1f, labyrinth.wall.transform.localScale.z);
+        wallL.transform.localScale = rowScale;
+        wallR.transform.localScale = rowScale;
+
+        Instantiate(labyrinth.corner,
+                    new Vector3(colBounds.x - 0.625f, 0.25f, rowBounds.y + 0.625f), Quaternion.identity, transform);
+        Instantiate(labyrinth.corner,
+                    new Vector3(colBounds.y + 0.625f, 0.25f, rowBounds.y + 0.625f), Quaternion.identity, transform);
+        Instantiate(labyrinth.corner,
+                    new Vector3(colBounds.x - 0.625f, 0.25f, rowBounds.x - 0.625f), Quaternion.identity, transform);
+        Instantiate(labyrinth.corner,
+                    new Vector3(colBounds.y + 0.625f, 0.25f, rowBounds.x - 0.625f), Quaternion.identity, transform);
+    }
+
     public void Generate(int rows, int columns) {
         var rowOffset = Mathf.Floor(rows / 2f) + (rows % 2 == 0 ? -0.5f : 0f);
         var colOffset = Mathf.Floor(columns / 2f) + (rows % 2 == 0 ? -0.5f : 0f);
@@ -44,33 +74,24 @@ public class Labyrinth : MonoBehaviour
             }
         }
 
-        var wallT = Instantiate(labyrinth.wall,
-                                new Vector3(0f, 0.25f, rowBounds.y + 0.5f + 0.125f), Quaternion.identity, transform);
-        var wallB = Instantiate(labyrinth.wall,
-                                new Vector3(0f, 0.25f, rowBounds.x - 0.5f - 0.125f), Quaternion.identity, transform);
-        var wallL = Instantiate(labyrinth.wall,
-                                new Vector3(colBounds.x - 0.5f - 0.125f, 0.25f, 0f), Quaternion.Euler(0f, 90f, 0f),
-                                transform);
-        var wallR = Instantiate(labyrinth.wall,
-                                new Vector3(colBounds.y + 0.5f + 0.125f, 0.25f, 0f), Quaternion.Euler(0f, 90f, 0f),
-                                transform);
+        // Generate inner walls
+        for (var z = rowBounds.x + 1f; z <= rowBounds.y; ++z) {
+            for (var x = colBounds.x; x <= colBounds.y - 1f; ++x) {
+                if (x + 2f > colBounds.y) {
+                    // If at the end, generate wall end + corner combo
+                    Instantiate(labyrinth.wallEnd,
+                                new Vector3(x - 0.0625f, 0.25f, z - 0.5f), Quaternion.identity, transform);
+                    Instantiate(labyrinth.corner,
+                                new Vector3(x + 0.5f, 0.25f, z - 0.5f), Quaternion.identity, transform);
+                }
+                else {
+                    Instantiate(labyrinth.wall,
+                                new Vector3(x, 0.25f, z - 0.5f), Quaternion.identity, transform);
+                }
+            }
+        }
 
-        var columnScale = new Vector3(columns, 1f, labyrinth.wall.transform.localScale.z);
-        wallT.transform.localScale = columnScale;
-        wallB.transform.localScale = columnScale;
-
-        var rowScale = new Vector3(rows, 1f, labyrinth.wall.transform.localScale.z);
-        wallL.transform.localScale = rowScale;
-        wallR.transform.localScale = rowScale;
-
-        Instantiate(labyrinth.corner,
-                    new Vector3(colBounds.x - 0.625f, 0.25f, rowBounds.y + 0.625f), Quaternion.identity, transform);
-        Instantiate(labyrinth.corner,
-                    new Vector3(colBounds.y + 0.625f, 0.25f, rowBounds.y + 0.625f), Quaternion.identity, transform);
-        Instantiate(labyrinth.corner,
-                    new Vector3(colBounds.x - 0.625f, 0.25f, rowBounds.x - 0.625f), Quaternion.identity, transform);
-        Instantiate(labyrinth.corner,
-                    new Vector3(colBounds.y + 0.625f, 0.25f, rowBounds.x - 0.625f), Quaternion.identity, transform);
+        GenerateOuterWalls(rows, columns, rowBounds, colBounds);
 
         Debug.Log($"Generated with {rows} rows, {columns} columns");
     }
