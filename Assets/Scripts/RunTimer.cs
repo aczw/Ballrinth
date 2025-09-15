@@ -29,6 +29,7 @@ public class RunTimer : MonoBehaviour
     public bool IsFinished() => currentStatus == Status.Finished;
 
     public float GetCurrentTime() => currentTime;
+    public float AddCurrentTime(float timeAdded) => currentTime += timeAdded;
 
     public void Restart() {
         currentStatus = Status.Finished;

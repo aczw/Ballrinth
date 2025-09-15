@@ -4027,7 +4027,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c36693210f7974a8da8c10e3ea6ad7ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IntermissionCanvas
-  dummyPowerUp: {fileID: 2151285975867073169, guid: b3da60400a04c4c08b570485bd614897, type: 3}
+  dummyPowerUp: {fileID: 2151285975867073169, guid: e641f1d36ca044c76b67ac69d8b328ec, type: 3}
   powerUpChoices: {fileID: 1349571891}
   choiceButtons:
   - {fileID: 771348601}

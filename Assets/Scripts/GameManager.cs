@@ -218,6 +218,7 @@ public class GameManager : MonoBehaviour
     public GameState GetGameState() => state;
 
     public float GetRemainingTime() => timer.GetCurrentTime();
+    public float AddRemainingTime(float timeAdded) => timer.AddCurrentTime(timeAdded);
 
     public HashSet<Inventory.Slot> GetFullSlots() => inventory.GetFullSlots();
     public void AddPowerUpToInventory(IPowerUp powerUp) => inventory.Add(powerUp);
