@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class IntermissionCanvas : MonoBehaviour
 {
@@ -35,9 +36,16 @@ public class IntermissionCanvas : MonoBehaviour
             button.interactable = inventoryHasSpace;
         }
 
-        choiceOne = Instantiate(dummyPowerUp, powerUpChoices).GetComponent<IPowerUp>();
-        choiceTwo = Instantiate(dummyPowerUp, powerUpChoices).GetComponent<IPowerUp>();
-        choiceThree = Instantiate(dummyPowerUp, powerUpChoices).GetComponent<IPowerUp>();
+        var possiblePowerUps = GameManager.I.GetPossiblePowerUps();
+        var numPowerUps = possiblePowerUps.Count;
+
+        choiceOne = possiblePowerUps[Random.Range(0, numPowerUps)];
+        choiceTwo = possiblePowerUps[Random.Range(0, numPowerUps)];
+        choiceThree = possiblePowerUps[Random.Range(0, numPowerUps)];
+
+        Debug.Log($"Choice 1: {choiceOne.GetName()}");
+        Debug.Log($"Choice 2: {choiceTwo.GetName()}");
+        Debug.Log($"Choice 3: {choiceThree.GetName()}");
     }
 
     private void OnDisable() {

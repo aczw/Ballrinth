@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,6 +9,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Systems")]
     [SerializeField] private Labyrinth labyrinth;
+    [SerializeField] private GameObject possiblePowerUpsHolder;
     public RunTimer timer;
     public Inventory inventory;
 
@@ -17,6 +19,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject outcome;
     [SerializeField] private GameObject timerDisplay;
     [SerializeField] private GameObject inventoryDisplay;
+    private List<IPowerUp> possiblePowerUps;
 
     /// <summary>
     ///     Per-frame state.
@@ -45,15 +48,22 @@ public class GameManager : MonoBehaviour
 
         rotationInput = new RotationInputBundle();
 
-        state = new GameState {
-            maxStagesEscaped = 0,
-            status = GameState.Status.MainMenu
-        };
-
         run = new RunState {
             won = false,
             stage = beginningStage
         };
+
+        state = new GameState {
+            maxStagesEscaped = 0,
+            status = GameState.Status.MainMenu
+        };
+        possiblePowerUps = new List<IPowerUp>();
+    }
+
+    private void Start() {
+        foreach (Transform powerUp in possiblePowerUpsHolder.transform) {
+            possiblePowerUps.Add(powerUp.GetComponent<IPowerUp>());
+        }
     }
 
     private void Update() {
@@ -215,4 +225,5 @@ public class GameManager : MonoBehaviour
 
     public RunState GetRunState() => run;
     public GameState GetGameState() => state;
+    public List<IPowerUp> GetPossiblePowerUps() => possiblePowerUps;
 }

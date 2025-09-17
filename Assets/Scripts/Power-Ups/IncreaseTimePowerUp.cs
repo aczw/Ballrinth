@@ -6,4 +6,5 @@ public class IncreaseTimePowerUp : MonoBehaviour, IPowerUp
     [SerializeField] private float timeAdded;
 
     public void Activate() => GameManager.I.timer.AddCurrentTime(timeAdded);
+    public string GetName() => "Add more time";
 }

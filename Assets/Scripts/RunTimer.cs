@@ -4,6 +4,7 @@ public class RunTimer : MonoBehaviour
 {
     [Header("Configuration")]
     [SerializeField] [Min(0f)] private float duration;
+    [SerializeField] [Min(0.01f)] private float speedMultiplier;
 
     private Status currentStatus;
     private float currentTime;
@@ -16,7 +17,7 @@ public class RunTimer : MonoBehaviour
     private void Update() {
         if (currentStatus != Status.Running) return;
 
-        currentTime -= Time.deltaTime;
+        currentTime -= Time.deltaTime * speedMultiplier;
 
         if (currentTime < 0f) {
             currentTime = 0f;
@@ -29,7 +30,12 @@ public class RunTimer : MonoBehaviour
     public bool IsFinished() => currentStatus == Status.Finished;
 
     public float GetCurrentTime() => currentTime;
-    public float AddCurrentTime(float timeAdded) => currentTime += timeAdded;
+    public void AddCurrentTime(float timeAdded) => currentTime += timeAdded;
+
+    public void SetSpeedMultiplier(float multiplier) {
+        if (multiplier < 0.01f) return;
+        speedMultiplier = multiplier;
+    }
 
     public void Restart() {
         currentStatus = Status.Finished;
