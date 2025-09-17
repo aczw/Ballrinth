@@ -2,5 +2,8 @@ using UnityEngine;
 
 public class IncreaseTimePowerUp : MonoBehaviour, IPowerUp
 {
-    public void Activate() => GameManager.I.AddRemainingTime(20f);
+    [Header("Configuration")]
+    [SerializeField] private float timeAdded;
+
+    public void Activate() => GameManager.I.timer.AddCurrentTime(timeAdded);
 }

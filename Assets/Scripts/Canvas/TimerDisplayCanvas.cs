@@ -8,7 +8,7 @@ public class TimerDisplayCanvas : MonoBehaviour
     private void Update() {
         if (GameManager.I.GetGameState().status != GameState.Status.InGame) return;
 
-        var time = GameManager.I.GetRemainingTime();
+        var time = GameManager.I.timer.GetCurrentTime();
         currentTime.text = time.ToString("F2");
     }
 }

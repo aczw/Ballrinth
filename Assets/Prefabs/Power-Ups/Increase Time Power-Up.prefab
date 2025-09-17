@@ -44,3 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c9dc3545f0349b09f7b29216ad7ce69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IncreaseTimePowerUp
+  timeAdded: 15

@@ -11,7 +11,7 @@ public class InventoryDisplay : MonoBehaviour
     private readonly Array slotEnumValues = Enum.GetValues(typeof(Inventory.Slot));
 
     private void Update() {
-        var fullSlots = GameManager.I.GetFullSlots();
+        var fullSlots = GameManager.I.inventory.GetFullSlots();
 
         foreach (Inventory.Slot slotValue in slotEnumValues) {
             var slotDisplay = slotValue switch {

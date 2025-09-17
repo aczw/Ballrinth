@@ -29,7 +29,7 @@ public class IntermissionCanvas : MonoBehaviour
     }
 
     private void OnEnable() {
-        var inventoryHasSpace = GameManager.I.GetFullSlots().Count < 3;
+        var inventoryHasSpace = GameManager.I.inventory.GetFullSlots().Count < 3;
 
         foreach (var button in choiceButtons) {
             button.interactable = inventoryHasSpace;
@@ -55,13 +55,13 @@ public class IntermissionCanvas : MonoBehaviour
     public void EnterNextStage() {
         switch (selected) {
         case SelectedChoice.One:
-            GameManager.I.AddPowerUpToInventory(choiceOne);
+            GameManager.I.inventory.Add(choiceOne);
             break;
         case SelectedChoice.Two:
-            GameManager.I.AddPowerUpToInventory(choiceTwo);
+            GameManager.I.inventory.Add(choiceTwo);
             break;
         case SelectedChoice.Three:
-            GameManager.I.AddPowerUpToInventory(choiceThree);
+            GameManager.I.inventory.Add(choiceThree);
             break;
         case SelectedChoice.None:
             break;

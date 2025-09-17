@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,8 +8,8 @@ public class GameManager : MonoBehaviour
 
     [Header("Systems")]
     [SerializeField] private Labyrinth labyrinth;
-    [SerializeField] private RunTimer timer;
-    [SerializeField] private Inventory inventory;
+    public RunTimer timer;
+    public Inventory inventory;
 
     [Header("Canvas Objects")]
     [SerializeField] private GameObject mainMenu;
@@ -216,10 +215,4 @@ public class GameManager : MonoBehaviour
 
     public RunState GetRunState() => run;
     public GameState GetGameState() => state;
-
-    public float GetRemainingTime() => timer.GetCurrentTime();
-    public float AddRemainingTime(float timeAdded) => timer.AddCurrentTime(timeAdded);
-
-    public HashSet<Inventory.Slot> GetFullSlots() => inventory.GetFullSlots();
-    public void AddPowerUpToInventory(IPowerUp powerUp) => inventory.Add(powerUp);
 }
