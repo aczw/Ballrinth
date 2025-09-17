@@ -69,7 +69,7 @@ public class Labyrinth : MonoBehaviour
 
                 // Spawn ball in the top left corner
                 if (Mathf.Approximately(z, rowBounds.y) && Mathf.Approximately(x, colBounds.x)) {
-                    Instantiate(ball, new Vector3(x, 5f, z), Quaternion.identity);
+                    Instantiate(ball, new Vector3(x, 1.5f, z), Quaternion.identity);
                 }
             }
         }
