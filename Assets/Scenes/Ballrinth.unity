@@ -2696,6 +2696,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlot
   toggle: {fileID: 802602523}
   title: {fileID: 1669891387}
+--- !u!4 &848586531 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4890766155131368528, guid: 217bd328e002f48e4b70a9d502eaf9ad, type: 3}
+  m_PrefabInstance: {fileID: 8214312939319536214}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &879839907
 GameObject:
   m_ObjectHideFlags: 0
@@ -3121,6 +3126,7 @@ Transform:
   m_Children:
   - {fileID: 110471105}
   - {fileID: 2103291282}
+  - {fileID: 848586531}
   m_Father: {fileID: 1782121200}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1100234012
@@ -6318,6 +6324,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1420757205122074244, guid: e641f1d36ca044c76b67ac69d8b328ec, type: 3}
   m_PrefabInstance: {fileID: 2103291281}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8214312939319536214
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 982200966}
+    m_Modifications:
+    - target: {fileID: 3579268981577060714, guid: 217bd328e002f48e4b70a9d502eaf9ad, type: 3}
+      propertyPath: m_Name
+      value: Stop Timer Power-Up
+      objectReference: {fileID: 0}
+    - target: {fileID: 4890766155131368528, guid: 217bd328e002f48e4b70a9d502eaf9ad, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4890766155131368528, guid: 217bd328e002f48e4b70a9d502eaf9ad, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4890766155131368528, guid: 217bd328e002f48e4b70a9d502eaf9ad, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4890766155131368528, guid: 217bd328e002f48e4b70a9d502eaf9ad, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4890766155131368528, guid: 217bd328e002f48e4b70a9d502eaf9ad, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4890766155131368528, guid: 217bd328e002f48e4b70a9d502eaf9ad, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4890766155131368528, guid: 217bd328e002f48e4b70a9d502eaf9ad, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4890766155131368528, guid: 217bd328e002f48e4b70a9d502eaf9ad, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4890766155131368528, guid: 217bd328e002f48e4b70a9d502eaf9ad, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4890766155131368528, guid: 217bd328e002f48e4b70a9d502eaf9ad, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 217bd328e002f48e4b70a9d502eaf9ad, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
