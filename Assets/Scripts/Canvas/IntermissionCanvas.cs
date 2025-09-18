@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class IntermissionCanvas : MonoBehaviour
@@ -10,7 +9,7 @@ public class IntermissionCanvas : MonoBehaviour
 
     [Header("Setup")]
     [SerializeField] private Transform powerUpChoices;
-    [SerializeField] private Button[] choiceButtons;
+    [SerializeField] private IntermissionChoice[] choices;
 
     private IPowerUp choiceOne;
     private IPowerUp choiceThree;
@@ -25,27 +24,26 @@ public class IntermissionCanvas : MonoBehaviour
         if (selected == SelectedChoice.None) return;
 
         for (var possibleChoice = 0; possibleChoice < 3; ++possibleChoice) {
-            choiceButtons[possibleChoice].interactable = selected != (SelectedChoice)possibleChoice;
+            choices[possibleChoice].button.interactable = selected != (SelectedChoice)possibleChoice;
         }
     }
 
     private void OnEnable() {
         var inventoryHasSpace = GameManager.I.inventory.GetFullSlots().Count < 3;
 
-        foreach (var button in choiceButtons) {
-            button.interactable = inventoryHasSpace;
+        foreach (var choice in choices) {
+            choice.button.interactable = inventoryHasSpace;
         }
 
         var possiblePowerUps = GameManager.I.GetPossiblePowerUps();
         var numPowerUps = possiblePowerUps.Count;
 
         choiceOne = possiblePowerUps[Random.Range(0, numPowerUps)];
+        choices[0].title.text = choiceOne.GetName();
         choiceTwo = possiblePowerUps[Random.Range(0, numPowerUps)];
+        choices[1].title.text = choiceTwo.GetName();
         choiceThree = possiblePowerUps[Random.Range(0, numPowerUps)];
-
-        Debug.Log($"Choice 1: {choiceOne.GetName()}");
-        Debug.Log($"Choice 2: {choiceTwo.GetName()}");
-        Debug.Log($"Choice 3: {choiceThree.GetName()}");
+        choices[2].title.text = choiceThree.GetName();
     }
 
     private void OnDisable() {

@@ -60,6 +60,15 @@ public class Inventory : MonoBehaviour
         return fullSlots;
     }
 
+    public IPowerUp Get(Slot slot) {
+        return slot switch {
+            Slot.One => slotOne,
+            Slot.Two => slotTwo,
+            Slot.Three => slotThree,
+            _ => throw new ArgumentOutOfRangeException(nameof(slot), slot, null)
+        };
+    }
+
     public void Clear() {
         slotOne = null;
         slotTwo = null;
