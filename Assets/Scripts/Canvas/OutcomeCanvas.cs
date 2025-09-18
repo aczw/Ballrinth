@@ -3,7 +3,10 @@ using UnityEngine;
 
 public class OutcomeCanvas : MonoBehaviour
 {
+    [Header("Setup")]
     [SerializeField] private TMP_Text result;
+    [SerializeField] private TMP_Text yourScore;
+    [SerializeField] private TMP_Text highScore;
 
     private void OnEnable() {
         var state = GameManager.I.GetGameState();
@@ -13,13 +16,10 @@ public class OutcomeCanvas : MonoBehaviour
             return;
         }
 
-        var maxStagesEscaped = state.maxStagesEscaped;
         var run = GameManager.I.GetRunState();
 
-        Debug.Log(run.won
-                      ? $"YOU WON THE GAME WITH {maxStagesEscaped} STAGES CLEARED!"
-                      : $"YOU LOST! NUM STAGES ESCAPED: {run.stage}, HIGH SCORE: {maxStagesEscaped}");
-
+        yourScore.text = run.stage.ToString();
+        highScore.text = state.maxStagesEscaped.ToString();
         result.text = run.won ? "You won!" : "You lost!";
     }
 }
