@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject possiblePowerUpsHolder;
     public RunTimer timer;
     public Inventory inventory;
+    public AudioSource sfxSource;
 
     [Header("Canvas Objects")]
     [SerializeField] private GameObject mainMenu;
@@ -19,6 +20,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject outcome;
     [SerializeField] private GameObject timerDisplay;
     [SerializeField] private GameObject inventoryDisplay;
+
+    [Header("SFX")]
+    public AudioClip hitWall;
+    public AudioClip escapeStage;
     private List<IPowerUp> possiblePowerUps;
 
     /// <summary>
@@ -125,6 +130,7 @@ public class GameManager : MonoBehaviour
         // End current labyrinth run
         timer.Pause();
         labyrinth.Clear();
+        sfxSource.PlayOneShot(escapeStage, 2f);
 
         // Set up intermission
         intermission.SetActive(true);
