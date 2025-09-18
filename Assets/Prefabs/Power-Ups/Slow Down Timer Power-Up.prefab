@@ -44,5 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1af65fc4a0e4472bfcfba2d3d765b4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlowDownTimerPowerUp
-  duration: 3
-  speedMultiplier: 0.5
+  duration: 10
+  speedMultiplier: 0.1
